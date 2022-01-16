@@ -234,18 +234,18 @@ layout2 = html.Div([
                                                     href='/upload/'
                                                 )
                                             ]),
-                                            html.Li([
-                                                dcc.Link(
-                                                    'TXT',
-                                                    href='/uploading/'
-                                                )
-                                            ]),
-                                            html.Li([
-                                                dcc.Link(
-                                                    'JSON',
-                                                    href='/uploading/'
-                                                )
-                                            ])
+                                            # html.Li([
+                                            #     dcc.Link(
+                                            #         'TXT',
+                                            #         href='/uploading/'
+                                            #     )
+                                            # ]),
+                                            # html.Li([
+                                            #     dcc.Link(
+                                            #         'JSON',
+                                            #         href='/uploading/'
+                                            #     )
+                                            # ])
                                         ],
                                         className='submenu')
                                     ]),
@@ -283,42 +283,42 @@ layout2 = html.Div([
                                         ],
                                         className='submenu')
                                     ]),
-                                    html.Li([
-                                        html.A([
-                                            html.I(className='ti-map-alt'),
-                                            html.Span('Maps')
-                                        ],
-                                        href='/maps')
-                                    ]),
-                                    html.Li([
-                                        html.A([
-                                            html.I(className='ti-help'),
-                                            html.Span('Help')
-                                        ],
-                                        href='javascript:void(0)'
-                                        ),
-                                        html.Ul([
-                                            html.Li([
-                                                dcc.Link(
-                                                    'About System',
-                                                    href='/summary/'
-                                                )
-                                            ]),
-                                            html.Li([
-                                                html.A(
-                                                    'Contacts',
-                                                    href=''
-                                                )
-                                            ]),
-                                            html.Li([
-                                                html.A(
-                                                    'System Info',
-                                                    href=''
-                                                )
-                                            ])
-                                        ],
-                                        className='submenu')
-                                    ]),
+                                    # html.Li([
+                                    #     html.A([
+                                    #         html.I(className='ti-map-alt'),
+                                    #         html.Span('Maps')
+                                    #     ],
+                                    #     href='/maps')
+                                    # ]),
+                                    # html.Li([
+                                    #     html.A([
+                                    #         html.I(className='ti-help'),
+                                    #         html.Span('Help')
+                                    #     ],
+                                    #     href='javascript:void(0)'
+                                    #     ),
+                                    #     html.Ul([
+                                    #         html.Li([
+                                    #             dcc.Link(
+                                    #                 'About System',
+                                    #                 href='/summary/'
+                                    #             )
+                                    #         ]),
+                                    #         html.Li([
+                                    #             html.A(
+                                    #                 'Contacts',
+                                    #                 href=''
+                                    #             )
+                                    #         ]),
+                                    #         html.Li([
+                                    #             html.A(
+                                    #                 'System Info',
+                                    #                 href=''
+                                    #             )
+                                    #         ])
+                                    #     ],
+                                    #     className='submenu')
+                                    # ]),
                                 ],
                                 id='nav_menu')
                             ])
@@ -371,22 +371,22 @@ layout2 = html.Div([
         id='demo-content'),
 
         #footer
-        html.Footer([
-            html.Div([
-                html.P([
-                    '© Copyright 2022. All right reserved. ',
-                    # html.A(
-                    #     '#teammulaga',
-                    #     href=''
-                    # )
-                ],
-                # style={'marginTop': '23%'}
-                )
-            ],
-            className='footer-area')
-        ],
-        id='footer',
-        style={'background':'#27293d'})
+        # html.Footer([
+        #     html.Div([
+        #         html.P([
+        #             '© Copyright 2022. All right reserved. ',
+        #             # html.A(
+        #             #     '#teammulaga',
+        #             #     href=''
+        #             # )
+        #         ],
+        #         # style={'marginTop': '23%'}
+        #         )
+        #     ],
+        #     className='footer-area')
+        # ],
+        # id='footer',
+        # style={'background':'#27293d'})
     ],
     className='horizontal-main-wrapper'
     ),
@@ -406,19 +406,19 @@ id='body_home')
 layout4 = html.Div([
     html.Div([
         #dummy input to trigger chart load..
-        dcc.Dropdown(
-                id='dummyInput',
-                value='chris',
-                style={
-                    'display': 'none'
-                }
-            ),
+        # dcc.Dropdown(
+        #         id='dummyInput',
+        #         value='chris',
+        #         style={
+        #             'display': 'none'
+        #         }
+        #     ),
         #interval for watchdog...
-        dcc.Interval(
-            id='interval-component',
-            interval=1*30000, # in milliseconds
-            n_intervals=0
-        ),
+        # dcc.Interval(
+        #     id='interval-component',
+        #     interval=1*30000, # in milliseconds
+        #     n_intervals=0
+        # ),
 
         html.Div([
             html.Div(
@@ -427,109 +427,109 @@ layout4 = html.Div([
                 ),
 
             #first Graph...
-            html.Div([
-                html.Div([
-                    html.Div([
-                        # dcc.Loading(
-                        #     id='loading-main',
-                        #     children=[
-                                html.Div([
-                                    html.Div([
-                                        dcc.Graph(
-                                            id='dbdGraphMain',
-                                            animate=True
-                                        )
-                                    ],
-                                    className='chart-area')
-                                ],
-                                className='card-body')
-                        #     ],
-                        #     # type='graph',
-                        #     fullscreen=False
-                        # )
-                    ],
-                    className='card card-chart')
-                ],
-                className='col-12')
-            ],
-            className='row'
-            ),
+            # html.Div([
+            #     html.Div([
+            #         html.Div([
+            #             # dcc.Loading(
+            #             #     id='loading-main',
+            #             #     children=[
+            #                     html.Div([
+            #                         html.Div([
+            #                             dcc.Graph(
+            #                                 id='dbdGraphMain',
+            #                                 animate=True
+            #                             )
+            #                         ],
+            #                         className='chart-area')
+            #                     ],
+            #                     className='card-body')
+            #             #     ],
+            #             #     # type='graph',
+            #             #     fullscreen=False
+            #             # )
+            #         ],
+            #         className='card card-chart')
+            #     ],
+            #     className='col-12')
+            # ],
+            # className='row'
+            # ),
 
             #second row graphs...
-            html.Div([
-                #chart 1
-                html.Div([
-                    html.Div([
-                        html.Div([
-                            dcc.Loading(
-                                id='loading-1',
-                                children=[
-                                    html.Div([
-                                        dcc.Graph(
-                                            id='dbdGraph1'
-                                        )
-                                    ],
-                                    className='chart-area')
-                                ],
-                                type='circle',
-                                fullscreen=False
-                            )
-                        ],
-                        className='card-body')
-                    ],
-                    className='card card-chart')
-                ],
-                className='col-lg-6'
-                ),
-                #chart 2
-                html.Div([
-                    html.Div([
-                        html.Div([
-                            dcc.Loading(
-                                id='loading-2',
-                                children=[
-                                    html.Div([
-                                        dcc.Graph(
-                                            id='dbdGraph2'
-                                        )
-                                    ],
-                                    className='chart-area')
-                                ],
-                                type='circle',
-                                fullscreen=False
-                            )
-                        ],
-                        className='card-body')
-                    ],
-                    className='card card-chart')
-                ],
-                className='col-lg-6'
-                ),
-                #chart 3
-                # html.Div([
-                #     html.Div([
-                #         html.Div([
-                #             dcc.Loading(
-                #                 id='loading-3',
-                #                 children=[
-                #                     html.Div([
-                #                         dcc.Graph(
-                #                             id='dbdGraph3' 
-                #                         )
-                #                     ],
-                #                     className='chart-area')
-                #                 ],
-                #                 type='circle',
-                #                 fullscreen=False
-                #             )
-                #         ],
-                #         className='card-body')
-                #     ],
-                #     className='card card-chart')
-                # ],
-                # className='col-lg-4')
-            ],
-            className='row')
+            # html.Div([
+            #     #chart 1
+            #     html.Div([
+            #         html.Div([
+            #             html.Div([
+            #                 dcc.Loading(
+            #                     id='loading-1',
+            #                     children=[
+            #                         html.Div([
+            #                             dcc.Graph(
+            #                                 id='dbdGraph1'
+            #                             )
+            #                         ],
+            #                         className='chart-area')
+            #                     ],
+            #                     type='circle',
+            #                     fullscreen=False
+            #                 )
+            #             ],
+            #             className='card-body')
+            #         ],
+            #         className='card card-chart')
+            #     ],
+            #     className='col-lg-6'
+            #     ),
+            #     #chart 2
+            #     html.Div([
+            #         html.Div([
+            #             html.Div([
+            #                 dcc.Loading(
+            #                     id='loading-2',
+            #                     children=[
+            #                         html.Div([
+            #                             dcc.Graph(
+            #                                 id='dbdGraph2'
+            #                             )
+            #                         ],
+            #                         className='chart-area')
+            #                     ],
+            #                     type='circle',
+            #                     fullscreen=False
+            #                 )
+            #             ],
+            #             className='card-body')
+            #         ],
+            #         className='card card-chart')
+            #     ],
+            #     className='col-lg-6'
+            #     ),
+            #     #chart 3
+            #     # html.Div([
+            #     #     html.Div([
+            #     #         html.Div([
+            #     #             dcc.Loading(
+            #     #                 id='loading-3',
+            #     #                 children=[
+            #     #                     html.Div([
+            #     #                         dcc.Graph(
+            #     #                             id='dbdGraph3' 
+            #     #                         )
+            #     #                     ],
+            #     #                     className='chart-area')
+            #     #                 ],
+            #     #                 type='circle',
+            #     #                 fullscreen=False
+            #     #             )
+            #     #         ],
+            #     #         className='card-body')
+            #     #     ],
+            #     #     className='card card-chart')
+            #     # ],
+            #     # className='col-lg-4')
+            # ],
+            # className='row')
         ],
         className='content')
     ],
@@ -550,29 +550,29 @@ layout5 = html.Div([
     style={'margin': '10px'},
     className='card'),
 
-    html.Div([
-        html.Div([
-            dcc.RadioItems(
-                id='dataSource',
-                options=[
-                    {'label': 'Notifications', 'value': 'not'},
-                    {'label': 'Outcomes', 'value': 'out'}
-                ],
-                value='out'
-            )
-        ],
-        style={
-            'margin': '5%',
-            'borderStyle': 'double',
-            'borderRadius': '8px'
-        })
-    ],
-    className='card',
-    style={
-        'marginLeft': '35%',
-        'marginRight': '35%',
-        'width' : '20%'
-    }),
+    # html.Div([
+    #     html.Div([
+    #         dcc.RadioItems(
+    #             id='dataSource',
+    #             options=[
+    #                 {'label': 'Notifications', 'value': 'not'},
+    #                 {'label': 'Outcomes', 'value': 'out'}
+    #             ],
+    #             value='out'
+    #         )
+    #     ],
+    #     style={
+    #         'margin': '5%',
+    #         'borderStyle': 'double',
+    #         'borderRadius': '8px'
+    #     })
+    # ],
+    # className='card',
+    # style={
+    #     'marginLeft': '35%',
+    #     'marginRight': '35%',
+    #     'width' : '20%'
+    # }),
 
     html.Div([
         html.Div(

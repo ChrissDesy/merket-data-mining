@@ -62,7 +62,7 @@ dash_app2.title = 'Analytics'
 
 dash_app2.layout = headerLayout
 # dash_app1.layout = chartsLayout
-dash_app1.layout = html.H1('hahahahah')
+dash_app1.layout = html.H1('Interface for Mining Techniques', className="text-white")
 
 #------------------------------> LOGIN MANAGEMENT <------------------------------------------
 
@@ -601,7 +601,6 @@ def display_page(pathname):
 
         elif pathname == "/tables/":
             return datatableLayout
-
             
         else:
             return pathname
@@ -655,26 +654,18 @@ def get_upload_file_name(name):
 
 #update datatable accordingly...
 @dash_app2.callback(Output('datatable', 'children'),
-            [Input('dataSource', 'value'), Input('storageDiv', 'children')])
-def updateDatatable(source, tbDataa):
+            [Input('storageDiv', 'children')])
+def updateDatatable(tbDataa):
     noty_data = pd.read_json(tbDataa, orient='split')
-    notifications = ['country','year','c_newinc','conf_mdr_tx','conf_xdr_tx','hivtest_pos']
-    outcomes = ['country','year','ret_rel','c_new_tsr','tbhiv_fail','tbhiv_died','c_tbhiv_tsr','mdr_fail','mdr_died','xdr_fail','xdr_died']
-
-    if (source == 'not'):
+    
+    if (True):
         return dash_table.DataTable(
-                    columns=[{"name": i, "id": i} for i in notifications],
-                    data=noty_data.to_dict("rows")
-                )
-
-    elif (source == 'out'):
-        return dash_table.DataTable(
-                    columns=[{"name": i, "id": i} for i in outcomes],
+                    columns=[{"name": i, "id": i} for i in noty_data.columns],
                     data=noty_data.to_dict("rows")
                 ) 
 
     else:
-        return html.H3('Invalid Data Source.. -> '+ source)
+        return html.H3('No Data Source..')
 
 
 
