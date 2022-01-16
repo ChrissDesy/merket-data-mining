@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="static/img/login.ico">
+    <title>َLogin</title>
+    <link rel="stylesheet" href="static/css/login.css">
+  </head>
+  <body>
+    <div id="clockbox" style="text-align:center;color:#3498db;font-weight:bold;margin-top: 3%;"></div>
+    <form class="box" method="post" id="container">
+      <h1>Login</h1>
+      <input type="text" name="username" placeholder="Username" value="{{request.form.username}}">
+      <input type="password" name="password" placeholder="Password" value="{{request.form.password}}">
+      <input type="submit" name="submitBtn"  value="Login">
+      <br>
+      <a onclick="addAccount()">+ add account </a>
+      <br><br>
+      {% if error %}
+        <div id="loginError">
+          <strong>Error: </strong> {{ error }}
+        </div>
+      {% elif info %}
+        <div id="loginInfo">
+          {{ info }}
+        </div>
+      {% endif %}
+    </form>
+    <script type="text/javascript">
+      tday=new Array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday");
+      tmonth=new Array("January","February","March","April","May","June","July","August","September","October","November","December");
+        
+      function GetClock(){
+        var d=new Date();
+          var nday=d.getDay(),nmonth=d.getMonth(),ndate=d.getDate(),nyear=d.getYear();
+          if(nyear<1000) nyear+=1900;
+          var nhour=d.getHours(),nmin=d.getMinutes(),nsec=d.getSeconds(),ap;
+        
+          if(nhour==0){ap=" AM";nhour=12;}
+          else if(nhour<12){ap=" AM";}
+          else if(nhour==12){ap=" PM";}
+          else if(nhour>12){ap=" PM";nhour-=12;}
+        
+          if(nmin<=9) nmin="0"+nmin;
+          if(nsec<=9) nsec="0"+nsec;
+        
+          document.getElementById('clockbox').innerHTML="("+tday[nday]+" "+ndate+" "+tmonth[nmonth]+") - "+nhour+":"+nmin+":"+nsec+ap+"";
+      }
+        
+      window.onload=function(){
+          GetClock();
+          setInterval(GetClock,1000);
+      }
+
+      function addAccount(){
+        document.getElementById('container').innerHTML='<h1>Sign Up</h1>'
+        +'<input type="text" name="uname" placeholder="enter Username" value="{{request.form.uname}}">'
+        +'<input type="password" name="pass" placeholder="enter Password" value="{{request.form.pass}}">'
+        +'<input type="password" name="pass1" placeholder="re-enter Password" value="{{request.form.pass1}}">'
+        +'<input type="submit" name="submitBtn"  value="Sign Up">'
+        +'<br>'
+      }
+    </script>
+
+</body>
+</html>

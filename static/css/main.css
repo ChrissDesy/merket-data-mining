@@ -1,0 +1,105 @@
+a  {
+    color: #1EAEDB;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 20px;
+    /* font-style: oblique; */
+}
+
+a:hover {
+    color: rgb(3, 61, 15)
+}
+
+h1 {
+    text-align: center;
+    color: rgb(44, 42, 163);
+    margin-top: 5%;
+}
+
+h1:hover {
+    color: blueviolet;
+    text-decoration: none;
+}
+
+#hr1 {
+    width: 90%;
+}
+
+#hr2 {
+    width: 60%;
+    margin-top: 5%;
+    margin-bottom: 3%;
+}
+
+#hr3 {
+    width: 80%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+h3 {
+    text-align: center;
+    color: blue;
+    margin-top: 5%;
+}
+
+h2 {
+    text-align: center;
+    color: rgb(212, 44, 44);
+    margin-top: 5%;
+}
+
+h5 {
+    color: blue;
+    font-size: 15px;
+}
+
+h6 {
+    text-align: center;
+    color: rgb(55, 0, 255);
+    font-size: 15px;
+}
+
+#submitBtn {
+    margin-top: 3%;
+    margin-left: 42%;
+    margin-right: 40%;
+    margin-bottom: inherit;
+    width: 20%;
+    border-radius: 15px;
+    border-style: none;
+    padding: 10px;
+    background-color: rgb(92, 92, 202)
+}
+
+#uploadBtn {
+    width:450px;;
+    padding:10px;
+    color: cornflowerblue;
+    margin-top: 3%;
+    font-size: 17px;
+    background: transparent;
+}
+
+#submitBtn:hover {
+    cursor: pointer;
+    text-transform: uppercase;
+    background-color: blue;
+    color: azure;
+}
+
+#proBtn {
+    margin-left: 40%;
+    margin-right: 40%;
+    border-radius: 15px;
+    border-style: solid;
+    padding: 10px;
+    background: #27293d;
+}
+
+#proBtn:hover {
+    cursor: pointer;
+    text-transform: uppercase;
+    background-color: blue;
+    color: azure;
+}
