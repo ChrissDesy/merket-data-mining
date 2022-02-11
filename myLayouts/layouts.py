@@ -327,7 +327,7 @@ layout2 = html.Div([
 
     # Hidden div inside the app that stores the dataset values...
     html.Div(id='storageDiv', style={'display': 'none'}),
-    html.Div(id='storageDiv2', style={'display': 'none'}),
+    # html.Div(id='storageDiv2', style={'display': 'none'}),
     #hidden div inside the app that stores the uploaded file name...
     html.Div(id='fileNames', style={'display': 'none'})
     
@@ -622,10 +622,10 @@ layout6 = html.Div([
                                 html.Div(
                                     dcc.Slider(
                                         id='sliderYear',
-                                        min=2012,
-                                        max=2018,
-                                        marks={i: '{}'.format(i) for i in range(2012, 2019)},
-                                        value = 2015
+                                        min=2009,
+                                        max=2013,
+                                        marks={i: '{}'.format(i) for i in range(2009, 2013)},
+                                        value = 2010
                                         )
                                     ),
                                 html.Label(

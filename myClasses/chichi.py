@@ -11,13 +11,7 @@ def integration(theData, type):
 
 	theDate = time.strftime('%d-%b-%y')
 	headers = [
-		'country','year','c_new_tsr',
-		'tbhiv_fail','tbhiv_died','tbhiv_succ',
-		'mdr_fail','mdr_died','mdr_succ',
-		'xdr_fail','xdr_died','xdr_succ',
-		'c_tbhiv_tsr','c_newinc',
-		'conf_xdr_tx','conf_mdr_tx',
-		'hivtest_pos','ret_rel'
+		'InvoiceNo', 'StockCode', 'Description', 'Quantity', 'InvoiceDate', 'UnitPrice', 'Country', 'CustomerID'
 		]
 
 	#check and load original data...

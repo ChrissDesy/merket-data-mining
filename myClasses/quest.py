@@ -24,7 +24,7 @@ def xml2df(xml_data):
     return df
 
 def update_headers(fname, user):
-    headers = ['country','year','c_new_tsr','tbhiv_succ','tbhiv_fail','tbhiv_died','tbhiv_lost','c_tbhiv_tsr','mdr_coh','mdr_succ','mdr_fail','mdr_died','mdr_lost','xdr_coh','xdr_succ','xdr_fail','xdr_died','xdr_lost','ret_rel','c_newinc','conf_mdr_tx','conf_xdr_tx','hivtest_pos' ]
+    headers = ['InvoiceNo', 'StockCode', 'Description', 'Quantity', 'InvoiceDate', 'UnitPrice', 'Country', 'CustomerID']
     df = pd.read_csv("tmp/"+user+'/'+fname, names = headers)
     return df
 
@@ -46,27 +46,29 @@ def extractData(filename):
 
 
         elif ext == ".txt":
-            print('extracting '+ext)
-            file_reader = pd.read_csv("tmp/"+usern+'/'+filename,delimiter='\t')
-            print("data found")
-            return file_reader
+            # print('extracting '+ext)
+            # file_reader = pd.read_csv("tmp/"+usern+'/'+filename,delimiter='\t')
+            # print("data found")
+            # return file_reader
+            return []
 
         elif ext == ".json":
-            print('extracting '+ext)
-            file_reader = pd.read_json("tmp/"+usern+'/'+filename)
-            print("data found")
-            return file_reader
+            # print('extracting '+ext)
+            # file_reader = pd.read_json("tmp/"+usern+'/'+filename)
+            # print("data found")
+            # return file_reader
+            return []
 
         elif ext == ".xlsx":
             print('extracting '+ext)
             file_reader = pd.read_excel("tmp/"+usern+'/'+filename)
-            print("data found")
+            # print("data found")
             return file_reader
 
         elif ext == ".csv" :
             print('extracting '+ext)
             file_reader = pd.read_csv("tmp/"+usern+'/'+filename)
-            print("data found")
+            # print("data found")
             return file_reader
 
         else:

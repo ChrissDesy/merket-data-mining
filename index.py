@@ -335,22 +335,6 @@ def load_data(children, ):
     #         isDataAvailable = False
     #         return ''
 
-#load map coordinates into system...
-@dash_app2.callback(Output('storageDiv2', 'children'),[Input('body_home', 'children')])
-def load_map_data(children):
-    try:
-        df = pd.read_csv('data/clinics_coordinates.csv')
-        print('dataset found')
-        if df.empty != True:
-            global ismapDataAvailable
-            ismapDataAvailable = True
-            return df.to_json(date_format='iso', orient='split')
-
-    except:
-        print("Data not found..")
-        ismapDataAvailable = False
-        return ''    
-
 #update logged in username...
 @dash_app2.callback(Output('userName', 'children'),[Input('body_home', 'children')])
 def get_User(children):
@@ -668,6 +652,22 @@ def updateDatatable(tbDataa):
 
     else:
         return html.H3('No Data Source..')
+
+#load dropdown country options...
+@dash_app2.callback(Output('dropdownCountry', 'options'),
+     [Input('storageDiv', 'children')])
+def load_country_options(data):
+    dff = pd.read_json(data, orient='split')
+    # print(dff)
+    try:
+        options = dff['Description'].unique()
+    except:
+        return [{}]
+
+    return [
+            {'label': i, 'value': i} for i in options
+        ]
+
 
 
 
