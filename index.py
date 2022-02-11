@@ -28,7 +28,7 @@ from myLayouts.layouts import layout2 as headerLayout
 from myLayouts.layouts import layout3 as uploadFileLayout
 from myLayouts.layouts import layout4 as dashboardLayout
 from myLayouts.layouts import layout5 as datatableLayout
-# from myLayouts.layouts import layout10 as chartsLayout
+from myLayouts.layouts import layout6 as mineLayout
 # from myLayouts.layouts import layout20 as mapLayout
 
 #handlers...
@@ -52,17 +52,16 @@ ALLOWED_EXTENSIONS = set(['txt','xlsx','json','csv','xls'])
 server.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 #Dash configurations...
-dash_app1 = Dash(__name__, server = server, url_base_pathname='/charts/' )
+# dash_app1 = Dash(__name__, server = server, url_base_pathname='/charts/' )
 dash_app2 = Dash(__name__, server = server, external_stylesheets=['/static/css/main.css'], url_base_pathname='/home/')
 
 dash_app2.config['suppress_callback_exceptions']=True
-dash_app1.config['suppress_callback_exceptions']=True
-dash_app1.title = 'Charts'
+# dash_app1.config['suppress_callback_exceptions']=True
+# dash_app1.title = 'Charts'
 dash_app2.title = 'Analytics'
 
 dash_app2.layout = headerLayout
 # dash_app1.layout = chartsLayout
-dash_app1.layout = html.H1('Interface for Mining Techniques', className="text-white")
 
 #------------------------------> LOGIN MANAGEMENT <------------------------------------------
 
@@ -602,6 +601,9 @@ def display_page(pathname):
         elif pathname == "/tables/":
             return datatableLayout
             
+        elif pathname == "/mining/":
+            return mineLayout
+
         else:
             return pathname
 
@@ -672,10 +674,11 @@ def updateDatatable(tbDataa):
 #------------------------------> ENCAPSULATING APPLICATION <-------------------------------------
 
 #protect views...
-dash_app1 = protect_views(dash_app1)
+# dash_app1 = protect_views(dash_app1)
 dash_app2 = protect_views(dash_app2)
 
 #------------------------------> RUNNING THE SERVER <--------------------------------------------
 
 #dev server(flask) on port 8000...
 run_simple('0.0.0.0', 8000, server, use_reloader=True, use_debugger=True)
+
