@@ -48,8 +48,9 @@ server.config.update(
     SECRET_KEY = 'secret_xxx'
 )
 UPLOAD_FOLDER = cwd + '/tmp/'
-ALLOWED_EXTENSIONS = set(['txt','xlsx','json','csv','xls'])
+ALLOWED_EXTENSIONS = set(['xlsx','csv','xls'])
 server.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+isDataAvailable = False
 
 #Dash configurations...
 # dash_app1 = Dash(__name__, server = server, url_base_pathname='/charts/' )
@@ -271,48 +272,23 @@ def processing(filenam):
                 return "<h1>An Error occurred during file processing. ref:[index(272)]</h1><p><a href='/'>Home Page</a></p>"
         except Exception as e:
             print('Error: '+str(e))
-            return "<h1>An Unknown Error occurred. ref:[index(275)]</h1><p><a href='/'>Home Page</a></p>"
+            return "<h1>An Unknown Error occurred. ref:[index(274)]</h1><p><a href='/'>Home Page</a></p>"
     
     else:
         print('failed to process file')
-        return '<h1>Usatijairire..!!</h1>'
+        return '<h1>Usatijairire..!! Check File Type. (CSV, XLS, XLSX)</h1>'
 
 #------------------------------> CALLBACKS TO HANDLE USER EVENTS <------------------------------
-
-#handle watchdog...
-@dash_app2.callback(Output('live-update-text', 'children'),
-              [Input('interval-component', 'n_intervals')])
-def update_metrics(n):
-    
-    try:
-        file = open('static\\watchdog', 'r')
-        oldt = file.readline()
-        file.close()
-
-    except Exception as e:
-        print("Error in watchdog: "+e)
-        oldt = ''
-    
-    d = modification_date('data\\new_data.csv')
-    # print('oldt = '+str(oldt)+' and new = '+str(d))
-    if str(oldt) != str(d):
-        file = open('static\\watchdog', 'w')
-        file.write(str(d))
-        file.close()
-        global trigger_update
-        trigger_update = True
-        return 'True'
-    else:
-        trigger_update = False
-        return 'False'
 
 #load data for app2 into system...
 @dash_app2.callback(Output('storageDiv', 'children'),
                     [Input('body_home', 'children')])
-def load_data(children, ):
+def load_data(children ):
+    # print("inside first callback")
     try:
         df =  pd.read_csv(str(Path('data\\new_data.csv')))
         if df.empty != True:
+            # print("Data found")
             global isDataAvailable
             isDataAvailable = True
             return df.to_json(date_format='iso', orient='split')
@@ -322,19 +298,6 @@ def load_data(children, ):
         isDataAvailable = False
         return ''
     
-    # if updated == 'True':
-    #     try:
-    #         df =  pd.read_csv(str(Path('data\\new_data.csv')))
-    #         if df.empty != True:
-    #             global isDataAvailable
-    #             isDataAvailable = True
-    #             return df.to_json(date_format='iso', orient='split')
-
-    #     except:
-    #         print("Data not found..")
-    #         isDataAvailable = False
-    #         return ''
-
 #update logged in username...
 @dash_app2.callback(Output('userName', 'children'),[Input('body_home', 'children')])
 def get_User(children):
@@ -346,58 +309,59 @@ def get_Userpic(children):
     # print(children + ' is logged in')
     return '../static/img/'+'Qriss'+'.png'
 
-#update dashboard chart-1...
-@dash_app2.callback(Output('dbdGraph1', 'figure'),
-                    [Input('storageDiv', 'children'), Input('dummyInput', 'value'), Input('live-update-text', 'children')])
-def update_outcomesGraph(data1, dummy, upda):
+#update dashboard product count...
+@dash_app2.callback(Output('productCount', 'children'),
+                    [Input('storageDiv', 'children')])
+def update_productsCount(data1):
+    # print('4th callback')
     if isDataAvailable:
         df = pd.read_csv('data\\new_data.csv')
-        data = df[df['year'] == 2016 ]
-        traces = []
-        traces.append(
-            go.Bar(
-                x = data.c_new_tsr,
-                y = data.country,
-                orientation = 'h'
-            )
-        )
+        myCount = df.StockCode.unique().size
 
     else:
-        traces=[]
+        myCount = 0
 
-    return {
-                'data': traces,
-                'layout': go.Layout(
-                    yaxis={
-                        'zeroline': False,
-                        'ticks': 'outside'
-                        },
-                    xaxis={
-                        'title': 'Rate(%)',
-                        'titlefont': dict(size=18, color='wheat'),
-                        'ticks': 'outside'
-                        },
-                    margin={'l': 60, 'b': 60, 't': 30, 'r': 20},
-                    legend={'x': 1, 'y': 1},
-                    hovermode='closest',
-                    paper_bgcolor='#27293d',
-                    plot_bgcolor='#27293d',
-                    font={'color':'#e14eca'},
-                    title='Treatment Success (2016)'
-                )
-            }
+    return myCount
+
+#update dashboard customer count...
+@dash_app2.callback(Output('customerCount', 'children'),
+                    [Input('storageDiv', 'children')])
+def update_customersCount(data1):
+    # print('5th callback')
+    if isDataAvailable:
+        df = pd.read_csv('data\\new_data.csv')
+        myCount = df.CustomerID.unique().size
+
+    else:
+        myCount = 0
+
+    return myCount
+
+#update dashboard locations count...
+@dash_app2.callback(Output('locationCount', 'children'),
+                    [Input('storageDiv', 'children')])
+def update_locationsCount(data1):
+    # print('6th callback')
+    if isDataAvailable:
+        df = pd.read_csv('data\\new_data.csv')
+        myCount = df.Country.unique().size
+
+    else:
+        myCount = 0
+
+    return myCount
 
 #update dashboard main graph...
 @dash_app2.callback(Output('dbdGraphMain', 'figure'),
-                    [Input('storageDiv', 'children'), Input('dummyInput', 'value'), Input('live-update-text', 'children')])
-def update_Main_dbd(data1, loaded, updated):
+                    [Input('storageDiv', 'children'), Input('live-update-text', 'children')])
+def update_Main_dbd(data1, updated):
     data = pd.read_csv('data\\new_data.csv')
 
     yvalues = []
-    xvalues = data['year'].unique()
+    xvalues = data['InvoiceDate'].unique()
     for year in xvalues:
-        y = data[data.year == year]
-        yv = y.c_newinc.sum()
+        y = data[data.InvoiceDate == year]
+        yv = y.Quantity.sum()
         yvalues.append(yv)
 
     figu = {
@@ -415,13 +379,13 @@ def update_Main_dbd(data1, loaded, updated):
 
         'layout': go.Layout(
             xaxis={
-                'title': 'Year',
+                'title': 'Date & Time',
                 'titlefont': dict(size=18, color='wheat'),
                 'zeroline': False,
                 'ticks': 'outside'
                 },
             yaxis={
-                'title': 'New Reported Cases',
+                'title': 'Product Quantities',
                 'titlefont': dict(size=18, color='wheat'),
                 'ticks': 'outside'
                 },
@@ -431,65 +395,80 @@ def update_Main_dbd(data1, loaded, updated):
             plot_bgcolor= '#27293d',
             paper_bgcolor='#27293d',
             font={'color':'#e14eca'},
-            title='Reported Cases Statistics'
+            title='Product Buying Statistics'
         )
     }
-
-    # df = data[data['country'] == 'Kenzamba']
-
-    # figu = {
-    #             'data': [{
-    #                 'x': df.year,
-    #                 'y': df.c_newinc,
-    #                 'line': {
-    #                     'width': 3,
-    #                     'shape': 'spline'
-    #                 }
-    #             }],
-    #             'layout': {
-    #                 'plot_bgcolor': '#27293d',
-    #                 'paper_bgcolor': '#27293d',
-    #                 'title': 'Reported Cases Statistics',
-    #                 'margin': {
-    #                     'l': 30,
-    #                     'r': 20,
-    #                     'b': 30,
-    #                     't': 20
-    #                 },
-    #                 'yaxis': {
-    #                     'title': 'New Reported Cases',
-    #                     'titlefont': dict(size=18, color='wheat'),
-    #                     'ticks': 'outside'
-    #                 },
-    #                 'xaxis': {
-    #                     'title': 'Year',
-    #                     'titlefont': dict(size=14, color='wheat')
-    #                 },
-    #                 'font':{
-    #                     'color': '#e14eca'
-    #                 }
-    #             }
-    #         }
 
     return figu
 
 #update dashboard chart-2...
 @dash_app2.callback(Output('dbdGraph2', 'figure'),
-                    [Input('storageDiv', 'children'), Input('dummyInput', 'value'), Input('live-update-text', 'children')])
-def update_deathsGraph(data1, loaded, updated):
+                    [Input('storageDiv', 'children'), Input('live-update-text', 'children')])
+def update_deathsGraph(data1, updated):
     df = pd.read_csv('data\\new_data.csv')
-    dff = df[df['year'] == 2015]
 
-    #calculate variables..
-    hiv = dff['tbhiv_died'].sum()
-    mdr = dff['mdr_died'].sum()
-    xdr = dff['xdr_died'].sum()
+    yvalues = []
+    xvalues = df.StockCode.unique()[:5]
+    for stock in xvalues:
+        y = df[df.StockCode == stock]
+        yv = y.Quantity.sum()
+        yvalues.append(yv)
 
     figur={
         'data':[
             {
-                'x':['HIV+', 'MDR-TB', 'XDR-TB'],
-                'y':[hiv, mdr, xdr],
+                'x':xvalues,
+                'y':yvalues,
+                'type':'bar',
+                'marker':{
+                    'color':'purple',
+                    'line': {
+                        'color':'rgb(158,202,225)',
+                        'width':1.5
+                        }
+                },
+                'opacity':0.6
+            }
+        ],
+        'layout': {
+            'plot_bgcolor': '#27293d',
+            'paper_bgcolor': '#27293d',
+            'yaxis': {
+                'title': 'Quantity',
+                'titlefont': dict(size=18, color='wheat'),
+                'ticks': 'outside'
+            },
+            'xaxis': {
+                'title': 'Product',
+                'titlefont': dict(size=14, color='lime')
+            },
+            'font':{
+                'color': '#e14eca'
+            },
+            'title': 'Overview of 5 Most Sought Products'
+        }
+    }
+
+    return figur
+
+#update dashboard chart-3...
+@dash_app2.callback(Output('dbdGraph3','figure'),
+                    [Input('storageDiv', 'children'), Input('live-update-text', 'children')])
+def update_Chart3_dbd(data1, updated):
+    df = pd.read_csv('data\\new_data.csv')
+
+    yvalues = []
+    xvalues = df.Country.unique()
+    for locate in xvalues:
+        y = df[df.Country == locate]
+        yv = y.Quantity.sum()
+        yvalues.append(yv)
+
+    figur={
+        'data':[
+            {
+                'x':xvalues,
+                'y':yvalues,
                 'type':'bar',
                 'marker':{
                     'color':'#e14eca',
@@ -505,68 +484,22 @@ def update_deathsGraph(data1, loaded, updated):
             'plot_bgcolor': '#27293d',
             'paper_bgcolor': '#27293d',
             'yaxis': {
-                'title': 'Number of Deaths (2015)',
+                'title': 'Quantity of Products',
                 'titlefont': dict(size=18, color='wheat'),
                 'ticks': 'outside'
             },
             'xaxis': {
-                'title': 'Total Number of Deaths = ' + str(hiv+mdr+xdr),
+                'title': 'Locations',
                 'titlefont': dict(size=14, color='lime')
             },
             'font':{
                 'color': '#e14eca'
             },
-            'title': 'Overview of Deaths Cases'
+            'title': 'Overview of Product Quantity by Locations'
         }
     }
 
     return figur
-
-#update dashboard chart-3...
-@dash_app2.callback(Output('dbdGraph3','figure'),
-                    [Input('storageDiv2', 'children'), Input('dummyInput', 'value')])
-def update_Chart3_dbd(data1, loaded):
-    
-    df = pd.read_json(data1, orient='split')
-
-    if ismapDataAvailable:
-        data = [
-            go.Scattermapbox(
-                lat=df['Latitude'],
-                lon=df['Longitude'],
-                mode='markers',
-                marker=go.scattermapbox.Marker(
-                    size=9
-                ),
-                text=df['Clinic/Hosp'],
-            )
-        ]
-
-        layout = go.Layout(
-            autosize=True,
-            hovermode='closest',
-            mapbox=go.layout.Mapbox(
-                accesstoken=mapbox_access_token,
-                bearing=0,
-                center=go.layout.mapbox.Center(
-                    lon=30.198248,
-                    lat=-17.358682
-                ),
-                pitch=0,
-                zoom=12
-            ),
-            paper_bgcolor='#27293d',
-            plot_bgcolor='#27293d',
-            font={'color':'#e14eca'},
-            title='Clinic Locations'
-        )
-
-        fig = go.Figure(data=data, layout=layout)
-
-        return fig
-
-    else:
-        return {}
 
 #validate url path for page layouts...
 @dash_app2.callback(Output('bodyHome', 'children'),
@@ -601,7 +534,7 @@ def display_page(pathname):
         else:
             return html.Div(
                 html.H3(
-                    'No Data Found',
+                    'No Data Found or Not Loaded',
                     style={
                         'marginTop': '10%',
                         'marginBottom': '6%',

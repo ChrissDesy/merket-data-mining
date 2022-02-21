@@ -288,12 +288,12 @@ layout2 = html.Div([
                     className='col-12 d-block d-lg-none'
                     ),
 
-                    #time
+                    # time
                     html.Div(
                         id='clockbox',
                         className='clearfix d-md-inline-block d-block',
                         style={'color': 'wheat'}
-                        )
+                    )
                 ],
                 className='row align-items-center')
             ],
@@ -352,19 +352,18 @@ layout4 = html.Div([
                 html.Div([
                     html.Div([
                         html.Div([
-                            dcc.Loading(
-                                id='loading-1',
-                                children=[
-                                    html.Div([
-                                        dcc.Graph(
-                                            id='dbdGraph1'
-                                        )
-                                    ],
-                                    className='chart-area')
-                                ],
-                                type='circle',
-                                fullscreen=False
-                            )
+                            html.Div([
+                                html.Div([
+                                    html.I(className='fa fa-shopping-cart fa-5x')
+                                ], 
+                                className='col-4 text-center'),
+                                html.Div([
+                                    html.H4('Products', className='h1 text-white mb-0'),
+                                    html.Span(id='productCount', className='h3')
+                                ], 
+                                className='col-8'),
+                            ],
+                            className='row')
                         ],
                         className='card-body')
                     ],
@@ -376,19 +375,18 @@ layout4 = html.Div([
                 html.Div([
                     html.Div([
                         html.Div([
-                            dcc.Loading(
-                                id='loading-2',
-                                children=[
-                                    html.Div([
-                                        dcc.Graph(
-                                            id='dbdGraph2'
-                                        )
-                                    ],
-                                    className='chart-area')
-                                ],
-                                type='circle',
-                                fullscreen=False
-                            )
+                            html.Div([
+                                html.Div([
+                                    html.I(className='fa fa-users fa-5x')
+                                ], 
+                                className='col-4 text-center'),
+                                html.Div([
+                                    html.H4('Customers', className='h1 text-white mb-0'),
+                                    html.Span(id='customerCount', className='h3')
+                                ], 
+                                className='col-8'),
+                            ],
+                            className='row')
                         ],
                         className='card-body')
                     ],
@@ -400,19 +398,18 @@ layout4 = html.Div([
                 html.Div([
                     html.Div([
                         html.Div([
-                            dcc.Loading(
-                                id='loading-3',
-                                children=[
-                                    html.Div([
-                                        dcc.Graph(
-                                            id='dbdGraph3'
-                                        )
-                                    ],
-                                    className='chart-area')
-                                ],
-                                type='circle',
-                                fullscreen=False
-                            )
+                            html.Div([
+                                html.Div([
+                                    html.I(className='fa fa-map-marker fa-5x')
+                                ], 
+                                className='col-4 text-center'),
+                                html.Div([
+                                    html.H4('Locations', className='h1 text-white mb-0'),
+                                    html.Span(id='locationCount', className='h3')
+                                ], 
+                                className='col-8'),
+                            ],
+                            className='row')
                         ],
                         className='card-body')
                     ],
@@ -434,7 +431,7 @@ layout4 = html.Div([
                                 children=[
                                     html.Div([
                                         dcc.Graph(
-                                            id='dbdGraph4'
+                                            id='dbdGraph2'
                                         )
                                     ],
                                     className='chart-area')
@@ -458,7 +455,7 @@ layout4 = html.Div([
                                 children=[
                                     html.Div([
                                         dcc.Graph(
-                                            id='dbdGraph5'
+                                            id='dbdGraph3'
                                         )
                                     ],
                                     className='chart-area')
