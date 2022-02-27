@@ -563,112 +563,112 @@ layout5 = html.Div([
 #------------------------------> Mining LAYOUT <--------------------------------------
 
 layout6 = html.Div([
+        html.Div([
             html.Div([
+                #chart Area...
                 html.Div([
-                    #chart Area...
                     html.Div([
                         html.Div([
-                            html.Div([
-                                #Options
-                                html.Div([
-                                    html.H4('Chart Options'),
-                                    html.Div(
-                                        'stuff here...',
-                                        id='graphOptions',
-                                        style={
-                                            'margin': '7px',
-                                            'borderStyle': 'solid',
-                                            'borderWidth': 'thin',
-                                            'borderRadius': '8px',
-                                            'borderColor': 'gray'
-                                            }
-                                    )
-                                ]),
+                            #Options
+                            # html.Div([
+                            #     html.H4('Chart Options'),
+                            #     html.Div(
+                            #         'stuff here...',
+                            #         id='graphOptions',
+                            #         style={
+                            #             'margin': '7px',
+                            #             'borderStyle': 'solid',
+                            #             'borderWidth': 'thin',
+                            #             'borderRadius': '8px',
+                            #             'borderColor': 'gray'
+                            #             }
+                            #     )
+                            # ]),
 
-                                html.Hr(
-                                    style={
-                                        'width':'90%',
-                                        'backgroundColor':'darkslategrey',
-                                        'margin': '2% 5%'
-                                        }
-                                    ),
-
-                                #Graph Chart
-                                html.Div(
-                                    id='chartArea'
-                                )
-                                
-                            ],
-                            className='card-body')
-                        ],
-                        className='card h-100')
-                    ],
-                    className='col-md-8 mt-5'
-                    ),
-
-                    #Controls...
-                    html.Div([
-                        html.Div([
-                            html.Div([
-                                html.Div([
-                                html.H4(
-                                    'Charts Controls',
-                                    className='header-title'
-                                ),
-                                html.Label('Year'),
-                                html.Div(
-                                    dcc.Slider(
-                                        id='sliderYear',
-                                        min=2009,
-                                        max=2013,
-                                        marks={i: '{}'.format(i) for i in range(2009, 2013)},
-                                        value = 2010
-                                        )
-                                    ),
-                                html.Label(
-                                    'Products',
-                                    style={
-                                        'marginTop': '15%'
-                                    }),
-                                html.Div(
-                                    dcc.Dropdown(
-                                        id='dropdownCountry',
-                                        placeholder='Select...',
-                                        value = 'all'
-                                    )
-                                ),
-                                html.Label(
-                                    'Chart Type',
-                                    style={
-                                        'marginTop': '10%'
+                            html.Hr(
+                                style={
+                                    'width':'90%',
+                                    'backgroundColor':'darkslategrey',
+                                    'margin': '2% 5%'
                                     }
                                 ),
-                                html.Div(
-                                    dcc.RadioItems(
-                                        id='chartType',
-                                        options=[
-                                            {'label': 'Bar Chart', 'value': 'bar'},
-                                            {'label': 'Pie Chart', 'value': 'pie'},
-                                            {'label': 'Scatter Chart', 'value': 'scatter'},
-                                            {'label': 'Line Chart', 'value': 'line'}
-                                        ],
-                                        value='bar'
-                                    )
-                                )
-                            ],
-                            className='card-body pb-0',
-                            style={'height':'345px'})
-                            ],
-                            className='card-body')
+
+                            #Graph Chart
+                            html.Div(
+                                id='chartArea'
+                            )
+                            
                         ],
-                        className='card h-100')
+                        className='card-body')
                     ],
-                    className='col-md-4 mt-5'
-                    ),          
+                    className='card h-100')
                 ],
-                className='row')
+                className='col-md-8 mt-5'
+                ),
+
+                #Controls...
+                html.Div([
+                    html.Div([
+                        html.Div([
+                            html.Div([
+                            html.H4(
+                                'Charts Controls',
+                                className='header-title'
+                            ),
+                            html.Label('Year'),
+                            html.Div(
+                                dcc.Slider(
+                                    id='sliderYear',
+                                    min=2017,
+                                    max=2022,
+                                    marks={i: '{}'.format(i) for i in range(2017, 2022)},
+                                    value = 2018
+                                    )
+                                ),
+                            html.Label(
+                                'Products',
+                                style={
+                                    'marginTop': '15%'
+                                }),
+                            html.Div(
+                                dcc.Dropdown(
+                                    id='dropdownCountry',
+                                    placeholder='Select...',
+                                    value = 'all'
+                                )
+                            ),
+                            html.Label(
+                                'Chart Type',
+                                style={
+                                    'marginTop': '10%'
+                                }
+                            ),
+                            html.Div(
+                                dcc.RadioItems(
+                                    id='chartType',
+                                    options=[
+                                        {'label': 'Bar Chart', 'value': 'bar'},
+                                        {'label': 'Pie Chart', 'value': 'pie'},
+                                        {'label': 'Scatter Chart', 'value': 'scatter'},
+                                        {'label': 'Line Chart', 'value': 'line'}
+                                    ],
+                                    value='bar'
+                                )
+                            )
+                        ],
+                        className='card-body pb-0',
+                        style={'height':'345px'})
+                        ],
+                        className='card-body')
+                    ],
+                    className='card h-100')
+                ],
+                className='col-md-4 mt-5'
+                ),          
             ],
-            className='container')
+            className='row')
         ],
-        id='main-content',
-        className='main-content-inner'),
+        className='container')
+    ],
+    id='main-content',
+    className='main-content-inner'),

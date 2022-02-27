@@ -307,7 +307,7 @@ def get_User(children):
 @dash_app2.callback(Output('userPic', 'src'),[Input('userName','children')])
 def get_Userpic(children):
     # print(children + ' is logged in')
-    return '../static/img/'+'Qriss'+'.png'
+    return '../static/img/'+children+'.png'
 
 #update dashboard product count...
 @dash_app2.callback(Output('productCount', 'children'),
@@ -395,7 +395,7 @@ def update_Main_dbd(data1, updated):
             plot_bgcolor= '#27293d',
             paper_bgcolor='#27293d',
             font={'color':'#e14eca'},
-            title='Product Buying Statistics'
+            title='Products Buying Statistics'
         )
     }
 
@@ -408,9 +408,9 @@ def update_deathsGraph(data1, updated):
     df = pd.read_csv('data\\new_data.csv')
 
     yvalues = []
-    xvalues = df.StockCode.unique()[:5]
+    xvalues = df.Description.unique()[:5]
     for stock in xvalues:
-        y = df[df.StockCode == stock]
+        y = df[df.Description == stock]
         yv = y.Quantity.sum()
         yvalues.append(yv)
 
@@ -586,6 +586,9 @@ def updateDatatable(tbDataa):
     else:
         return html.H3('No Data Source..')
 
+
+#------------------------------> MINING AREA CALLBACKS <----------------------------------------
+
 #load dropdown country options...
 @dash_app2.callback(Output('dropdownCountry', 'options'),
      [Input('storageDiv', 'children')])
@@ -600,6 +603,226 @@ def load_country_options(data):
     return [
             {'label': i, 'value': i} for i in options
         ]
+
+#update options for graph manipulation...
+# @dash_app2.callback(Output('graphOptions', 'children'),
+#                     [Input('chartType', 'value'), Input('chartArea', 'children'),
+#                     Input('storageDiv', 'children')])
+# def update_graphOptions(value, dummy, data):
+#     dff = pd.read_json(data, orient='split')
+#     options = value + ' Options not available'
+    
+#     if value != 'pie':
+#         options = html.Div([
+#             html.Div([
+#                 'X-axis:',
+#                 dcc.Dropdown(
+#                     id='dropdownValue1',
+#                     options = [{'label': i, 'value': i} for i in dff.columns.unique()],
+#                     placeholder='Select Value...',
+#                     # value = 'InvoiceDate',
+#                     style={'width': '50%', 'margin': '3px'}
+#                 ),
+#                 'Y-axis:',
+#                 dcc.Dropdown(
+#                     id='dropdownValue2',
+#                     options = [{'label': i, 'value': i} for i in dff.columns.unique()],
+#                     placeholder='Select Value...',
+#                     # value = 'Quantity',
+#                     style={'width': '50%', 'margin': '3px'}
+#                 )
+#             ],
+#             style={'display': 'flex'})
+                    
+#         ])
+
+#     elif value == 'pie':
+#         options = html.Div([
+#             dcc.RadioItems(
+#                 id='tbType',
+#                 options=[
+#                     {'label': 'XDR-TB', 'value': 'xdr'},
+#                     {'label': 'MDR-TB', 'value': 'mdr'},
+#                     {'label': 'HIV-TB', 'value': 'hiv'}
+#                 ],
+#                 value='hiv',
+#                 labelStyle={'display': 'inline-block'}
+#             )
+#         ])
+
+#     return options
+
+#update chart area...
+@dash_app2.callback(Output('chartArea', 'children'), [Input('chartType', 'value')])
+def upadte_graphType(ctype):
+    figu = {}
+
+    return dcc.Loading(
+            id='loading-main',
+            children=[
+                dcc.Graph(
+                    id=ctype + 'Graph',
+                    figure=figu
+                )
+            ],
+            type='circle',
+            fullscreen=False
+        ) 
+
+#update chart plot diagram (bar)...
+@dash_app2.callback(Output('barGraph', 'figure'),
+              [Input('storageDiv', 'children'), Input('dropdownCountry', 'value')])
+def update_bar(data1, vCountry):
+    data = pd.read_json(data1, orient='split')
+
+    if vCountry != 'all':
+        dff = data[data['Description'] == vCountry ]
+        traces = []
+        traces.append(go.Bar(
+            x=dff.Country,
+            y=dff.Quantity,
+            opacity=0.7
+        ))
+
+        return {
+            'data': traces,
+            'layout': go.Layout(
+                xaxis={
+                    'title': 'Location',
+                    'titlefont': dict(size=18, color='darkgrey'),
+                    'zeroline': False,
+                    'ticks': 'outside'
+                    },
+                yaxis={
+                    'title': vCountry + ' Quantity',
+                    'titlefont': dict(size=18, color='darkgrey'),
+                    'ticks': 'outside'
+                    },
+                    title='Product Buying per Location',
+                margin={'l': 60, 'b': 60, 't': 30, 'r': 20},
+                legend={'x': 1, 'y': 1},
+                hovermode='closest',
+                paper_bgcolor='#27293d',
+                plot_bgcolor='#27293d',
+                font={'color':'#e14eca'}
+            )
+        }
+
+    else:
+        dff = data
+        traces = []
+        traces.append(go.Bar(
+            x=dff.Country,
+            y=dff.Quantity,
+            opacity=0.7
+        ))
+        return {
+                'data': traces,
+                'layout': go.Layout(
+                    xaxis={
+                        'title': 'Location',
+                        'titlefont': dict(size=18, color='darkgrey'),
+                        'zeroline': False,
+                        'ticks': 'outside'
+                        },
+                    yaxis={
+                        'title': 'Products Quantities',
+                        'titlefont': dict(size=18, color='darkgrey'),
+                        'ticks': 'outside'
+                        },
+                    margin={'l': 60, 'b': 60, 't': 30, 'r': 20},
+                    legend={'x': 1, 'y': 1},
+                    hovermode='closest',
+                    title='Products Buying per Location',
+                    paper_bgcolor='#27293d',
+                    plot_bgcolor='#27293d',
+                    font={'color':'#e14eca'}
+                )
+            }
+
+#update chart plot diagram (scatter)...
+@dash_app2.callback(Output('scatterGraph', 'figure'),
+              [Input('storageDiv', 'children'), Input('dropdownCountry', 'value')])
+def update_scatter(theData, vCountry):
+    data = pd.read_json(theData, orient='split')
+
+    if vCountry != 'all':
+        # print('all: ' + vCountry)
+        dff = data[data['Description'] == vCountry ]
+        traces = []
+        traces.append(go.Scatter(
+            x=dff.Country,
+            y=dff.Quantity,
+            opacity=0.7,
+            mode='markers',
+            marker={
+                'size': 15,
+                'line': {'width': 0.5, 'color': 'white'}
+            }
+        ))
+
+        return {
+            'data': traces,
+            'layout': go.Layout(
+                xaxis={
+                    'title': 'Location',
+                    'titlefont': dict(size=18, color='darkgrey'),
+                    'zeroline': False,
+                    'ticks': 'outside'
+                    },
+                yaxis={
+                    'title': vCountry,
+                    'titlefont': dict(size=18, color='darkgrey'),
+                    'ticks': 'outside'
+                    },
+                title='New Cases Reported',
+                margin={'l': 60, 'b': 60, 't': 30, 'r': 20},
+                legend={'x': 1, 'y': 1},
+                hovermode='closest',
+                paper_bgcolor='#27293d',
+                plot_bgcolor='#27293d',
+                font={'color':'#e14eca'}
+            )
+        }
+
+    else:
+        return {
+            'data': [
+                go.Scatter(
+                    x=data[data['Country'] == i],
+                    y=data[data['Country'] == i]['Quantity'],
+                    # text=data[data['Country'] == i]['Quantity'],
+                    mode='markers',
+                    opacity=0.7,
+                    marker={
+                        'size': 15,
+                        'line': {'width': 0.5, 'color': 'white'}
+                        },
+                    name=i
+                    ) for i in data.Country.unique()
+                ],
+
+            'layout': go.Layout(
+                xaxis={
+                    'title': 'Location',
+                    'titlefont': dict(size=18, color='lime'),
+                    'zeroline': False,
+                    'ticks': 'outside'
+                    },
+                yaxis={
+                    'title': 'Quantity',
+                    'titlefont': dict(size=18, color='lime'),
+                    'ticks': 'outside'
+                    },
+                margin={'l': 60, 'b': 60, 't': 30, 'r': 20},
+                legend={'x': 1, 'y': 1},
+                hovermode='closest',
+                title='Buying Behaviours',
+                paper_bgcolor='#27293d',
+                plot_bgcolor='#27293d',
+                font={'color':'#e14eca'}
+            )
+        }
 
 
 
