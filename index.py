@@ -844,8 +844,10 @@ def update_scatter(theData, vcountry, xValue, yValue):
 @dash_app2.callback(Output('pieGraph', 'figure'),
               [Input('storageDiv', 'children'), Input('dropdownCountry', 'value'),
               Input('sliderYear', 'value')])
-def update_pie(theData, vCountry, vYear):
+def update_pie(theData, vcountry, vYear):
     dat = pd.read_json(theData, orient='split')
+
+    vCountry = vcountry if vcountry else 'all'
     
     if vCountry != 'all':
         df = dat[dat['Description'] == vCountry]
@@ -878,23 +880,25 @@ def update_pie(theData, vCountry, vYear):
 @dash_app2.callback(Output('lineGraph', 'figure'),
               [Input('storageDiv', 'children'), Input('dropdownCountry', 'value'),
                Input('dropdownValue1', 'value'), Input('dropdownValue2', 'value')])
-def update_line(data1, vCountry, xValue, yValue):
+def update_line(data1, vcountry, xValue, yValue):
     data = pd.read_json(data1, orient='split')
+
+    vCountry = vcountry if vcountry else 'all'
 
     if vCountry != 'all':
         dff = data[data['Description'] == vCountry ]
         plot = [go.Scatter(
-                    x=dff[xValue],
-                    y=dff[yValue],
-                    # text=dff['year'],
+                    x=dff[xValue] if xValue else dff.InvoiceDate,
+                    y=dff[yValue] if yValue else dff.Quantity,
+                    text=dff['Country'],
                     opacity=0.7
                 )]
 
     else:
         plot = [go.Scatter(
-                    x=data[data['Country'] == i]['Description'],
-                    y=data[data['Country'] == i]['Quantity'],
-                    text=data[data['Country'] == i]['Description'],
+                    x=data[data.Country == i][xValue] if xValue else data[data['Country'] == i]['Description'],
+                    y=data[data.Country == i][yValue] if yValue else data[data['Country'] == i]['Quantity'],
+                    text=data[data['Country'] == i],
                     opacity=0.7,
                     name=i
                 ) for i in data.Country.unique()]
@@ -904,13 +908,13 @@ def update_line(data1, vCountry, xValue, yValue):
 
         'layout': go.Layout(
             xaxis={
-                'title': 'Year',
+                # 'title': 'Year',
                 'titlefont': dict(size=18, color='wheat'),
                 'zeroline': False,
                 'ticks': 'outside'
                 },
             yaxis={
-                'title': 'New Reported Cases',
+                'title': yValue if yValue else 'Quantity',
                 'titlefont': dict(size=18, color='wheat'),
                 'ticks': 'outside'
                 },
@@ -920,7 +924,7 @@ def update_line(data1, vCountry, xValue, yValue):
             plot_bgcolor= '#27293d',
             paper_bgcolor='#27293d',
             font={'color':'#e14eca'},
-            title='Reported Cases Statistics'
+            title='Product Buying Behaviours'
         )
     }
 
