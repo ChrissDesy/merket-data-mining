@@ -604,53 +604,56 @@ def load_country_options(data):
             {'label': i, 'value': i} for i in options
         ]
 
-#update options for graph manipulation...
-# @dash_app2.callback(Output('graphOptions', 'children'),
-#                     [Input('chartType', 'value'), Input('chartArea', 'children'),
-#                     Input('storageDiv', 'children')])
-# def update_graphOptions(value, dummy, data):
-#     dff = pd.read_json(data, orient='split')
-#     options = value + ' Options not available'
+# update options for graph manipulation...
+@dash_app2.callback(Output('graphOptions', 'children'),
+                    [Input('chartType', 'value'), Input('chartArea', 'children'),
+                    Input('storageDiv', 'children')])
+def update_graphOptions(value, dummy, data):
+    dff = pd.read_json(data, orient='split')
+    # options = value + ' Options not available'
+    # print(options)
     
-#     if value != 'pie':
-#         options = html.Div([
-#             html.Div([
-#                 'X-axis:',
-#                 dcc.Dropdown(
-#                     id='dropdownValue1',
-#                     options = [{'label': i, 'value': i} for i in dff.columns.unique()],
-#                     placeholder='Select Value...',
-#                     # value = 'InvoiceDate',
-#                     style={'width': '50%', 'margin': '3px'}
-#                 ),
-#                 'Y-axis:',
-#                 dcc.Dropdown(
-#                     id='dropdownValue2',
-#                     options = [{'label': i, 'value': i} for i in dff.columns.unique()],
-#                     placeholder='Select Value...',
-#                     # value = 'Quantity',
-#                     style={'width': '50%', 'margin': '3px'}
-#                 )
-#             ],
-#             style={'display': 'flex'})
+    if value != 'pie':
+        options = html.Div([
+            html.Div([
+                'X-axis:',
+                dcc.Dropdown(
+                    id='dropdownValue1',
+                    options = [{'label': i, 'value': i} for i in dff.columns.unique()],
+                    placeholder='Select Value...',
+                    value = 'Country',
+                    style={'width': '50%', 'margin': '3px'}
+                ),
+                'Y-axis:',
+                dcc.Dropdown(
+                    id='dropdownValue2',
+                    options = [{'label': i, 'value': i} for i in dff.columns.unique()],
+                    placeholder='Select Value...',
+                    value = 'Quantity',
+                    style={'width': '50%', 'margin': '3px'}
+                )
+            ],
+            style={'display': 'flex'})
                     
-#         ])
+        ])
 
-#     elif value == 'pie':
-#         options = html.Div([
-#             dcc.RadioItems(
-#                 id='tbType',
-#                 options=[
-#                     {'label': 'XDR-TB', 'value': 'xdr'},
-#                     {'label': 'MDR-TB', 'value': 'mdr'},
-#                     {'label': 'HIV-TB', 'value': 'hiv'}
-#                 ],
-#                 value='hiv',
-#                 labelStyle={'display': 'inline-block'}
-#             )
-#         ])
+    elif value == 'pie':
+        options = html.Div([
+            # dcc.RadioItems(
+            #     id='tbType',
+            #     options=[
+            #         {'label': 'XDR-TB', 'value': 'xdr'},
+            #         {'label': 'MDR-TB', 'value': 'mdr'},
+            #         {'label': 'HIV-TB', 'value': 'hiv'}
+            #     ],
+            #     value='hiv',
+            #     labelStyle={'display': 'inline-block'}
+            # )
+            'Pie Chart Options not Available'
+        ],
+        className='p-2')
 
-#     return options
+    return options
 
 #update chart area...
 @dash_app2.callback(Output('chartArea', 'children'), [Input('chartType', 'value')])
@@ -671,17 +674,20 @@ def upadte_graphType(ctype):
 
 #update chart plot diagram (bar)...
 @dash_app2.callback(Output('barGraph', 'figure'),
-              [Input('storageDiv', 'children'), Input('dropdownCountry', 'value')])
-def update_bar(data1, vCountry):
+              [Input('storageDiv', 'children'), Input('dropdownCountry', 'value'),
+               Input('dropdownValue1', 'value'), Input('dropdownValue2', 'value')])
+def update_bar(data1, vCountry, xValue, yValue):
     data = pd.read_json(data1, orient='split')
 
     if vCountry != 'all':
         dff = data[data['Description'] == vCountry ]
         traces = []
         traces.append(go.Bar(
-            x=dff.Country,
-            y=dff.Quantity,
-            opacity=0.7
+            # x=dff.Country,
+            # y=dff.Quantity,
+            x = dff[xValue],
+            y = dff[yValue],
+            opacity = 0.7
         ))
 
         return {
@@ -712,8 +718,10 @@ def update_bar(data1, vCountry):
         dff = data
         traces = []
         traces.append(go.Bar(
-            x=dff.Country,
-            y=dff.Quantity,
+            # x=dff.Country,
+            # y=dff.Quantity,
+            x = dff[xValue],
+            y = dff[yValue],
             opacity=0.7
         ))
         return {
@@ -742,8 +750,9 @@ def update_bar(data1, vCountry):
 
 #update chart plot diagram (scatter)...
 @dash_app2.callback(Output('scatterGraph', 'figure'),
-              [Input('storageDiv', 'children'), Input('dropdownCountry', 'value')])
-def update_scatter(theData, vCountry):
+              [Input('storageDiv', 'children'), Input('dropdownCountry', 'value'),
+               Input('dropdownValue1', 'value'), Input('dropdownValue2', 'value')])
+def update_scatter(theData, vCountry, xValue, yValue):
     data = pd.read_json(theData, orient='split')
 
     if vCountry != 'all':
@@ -775,7 +784,7 @@ def update_scatter(theData, vCountry):
                     'titlefont': dict(size=18, color='darkgrey'),
                     'ticks': 'outside'
                     },
-                title='New Cases Reported',
+                title='Product Buying Distribution',
                 margin={'l': 60, 'b': 60, 't': 30, 'r': 20},
                 legend={'x': 1, 'y': 1},
                 hovermode='closest',
@@ -823,6 +832,92 @@ def update_scatter(theData, vCountry):
                 font={'color':'#e14eca'}
             )
         }
+
+#update chart plot diagram (pie)...
+@dash_app2.callback(Output('pieGraph', 'figure'),
+              [Input('storageDiv', 'children'), Input('dropdownCountry', 'value'),
+              Input('sliderYear', 'value')])
+def update_pie(theData, vCountry, vYear):
+    dat = pd.read_json(theData, orient='split')
+    
+    if vCountry != 'all':
+        df = dat[dat['Description'] == vCountry]
+        # data = df[df['year'] == vYear]
+        
+        labels = df.Country
+        values = df.Quantity
+
+    else:
+        labels = dat.Country
+        values = dat.Quantity
+    
+    trace = go.Pie(labels=labels, values=values)
+
+    return {
+        'data':[
+            trace
+            ],
+        'layout':
+            go.Layout(
+                    paper_bgcolor='#27293d',
+                    plot_bgcolor='#27293d',
+                    font={'color':'#e14eca'},
+                    title='Products Buying Distribution'
+                )
+        
+        }
+
+#update chart plot diagram (line)...
+@dash_app2.callback(Output('lineGraph', 'figure'),
+              [Input('storageDiv', 'children'), Input('dropdownCountry', 'value'),
+               Input('dropdownValue1', 'value'), Input('dropdownValue2', 'value')])
+def update_line(data1, vCountry, xValue, yValue):
+    data = pd.read_json(data1, orient='split')
+
+    if vCountry != 'all':
+        dff = data[data['Description'] == vCountry ]
+        plot = [go.Scatter(
+                    x=dff[xValue],
+                    y=dff[yValue],
+                    # text=dff['year'],
+                    opacity=0.7
+                )]
+
+    else:
+        plot = [go.Scatter(
+                    x=data[data['Country'] == i]['Description'],
+                    y=data[data['Country'] == i]['Quantity'],
+                    text=data[data['Country'] == i]['Description'],
+                    opacity=0.7,
+                    name=i
+                ) for i in data.Country.unique()]
+
+    figu = {
+        'data': plot,
+
+        'layout': go.Layout(
+            xaxis={
+                'title': 'Year',
+                'titlefont': dict(size=18, color='wheat'),
+                'zeroline': False,
+                'ticks': 'outside'
+                },
+            yaxis={
+                'title': 'New Reported Cases',
+                'titlefont': dict(size=18, color='wheat'),
+                'ticks': 'outside'
+                },
+            margin={'l': 60, 'b': 60, 't': 30, 'r': 20},
+            legend={'x': 1, 'y': 1},
+            hovermode='closest',
+            plot_bgcolor= '#27293d',
+            paper_bgcolor='#27293d',
+            font={'color':'#e14eca'},
+            title='Reported Cases Statistics'
+        )
+    }
+
+    return figu
 
 
 

@@ -570,20 +570,20 @@ layout6 = html.Div([
                     html.Div([
                         html.Div([
                             #Options
-                            # html.Div([
-                            #     html.H4('Chart Options'),
-                            #     html.Div(
-                            #         'stuff here...',
-                            #         id='graphOptions',
-                            #         style={
-                            #             'margin': '7px',
-                            #             'borderStyle': 'solid',
-                            #             'borderWidth': 'thin',
-                            #             'borderRadius': '8px',
-                            #             'borderColor': 'gray'
-                            #             }
-                            #     )
-                            # ]),
+                            html.Div([
+                                html.H4('Chart Options'),
+                                html.Div(
+                                    'stuff here...',
+                                    id='graphOptions',
+                                    style={
+                                        'margin': '7px',
+                                        'borderStyle': 'solid',
+                                        'borderWidth': 'thin',
+                                        'borderRadius': '8px',
+                                        'borderColor': 'gray'
+                                        }
+                                )
+                            ]),
 
                             html.Hr(
                                 style={
