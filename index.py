@@ -676,8 +676,10 @@ def upadte_graphType(ctype):
 @dash_app2.callback(Output('barGraph', 'figure'),
               [Input('storageDiv', 'children'), Input('dropdownCountry', 'value'),
                Input('dropdownValue1', 'value'), Input('dropdownValue2', 'value')])
-def update_bar(data1, vCountry, xValue, yValue):
+def update_bar(data1, vcountry, xValue, yValue):
     data = pd.read_json(data1, orient='split')
+
+    vCountry = vcountry if vcountry else 'all'
 
     if vCountry != 'all':
         dff = data[data['Description'] == vCountry ]
@@ -685,8 +687,8 @@ def update_bar(data1, vCountry, xValue, yValue):
         traces.append(go.Bar(
             # x=dff.Country,
             # y=dff.Quantity,
-            x = dff[xValue],
-            y = dff[yValue],
+            x = dff[xValue] if xValue else dff.Country,
+            y = dff[yValue] if yValue else dff.Quantity,
             opacity = 0.7
         ))
 
@@ -720,8 +722,8 @@ def update_bar(data1, vCountry, xValue, yValue):
         traces.append(go.Bar(
             # x=dff.Country,
             # y=dff.Quantity,
-            x = dff[xValue],
-            y = dff[yValue],
+            x = dff[xValue] if xValue else dff.Country,
+            y = dff[yValue] if yValue else dff.Quantity,
             opacity=0.7
         ))
         return {
@@ -752,16 +754,21 @@ def update_bar(data1, vCountry, xValue, yValue):
 @dash_app2.callback(Output('scatterGraph', 'figure'),
               [Input('storageDiv', 'children'), Input('dropdownCountry', 'value'),
                Input('dropdownValue1', 'value'), Input('dropdownValue2', 'value')])
-def update_scatter(theData, vCountry, xValue, yValue):
+def update_scatter(theData, vcountry, xValue, yValue):
     data = pd.read_json(theData, orient='split')
+
+    vCountry = vcountry if vcountry else 'all'
 
     if vCountry != 'all':
         # print('all: ' + vCountry)
         dff = data[data['Description'] == vCountry ]
         traces = []
         traces.append(go.Scatter(
-            x=dff.Country,
-            y=dff.Quantity,
+            # x=dff.Country,
+            # y=dff.Quantity,
+            x=dff[xValue],
+            y=dff[yValue],
+            text=dff['Country'],
             opacity=0.7,
             mode='markers',
             marker={
@@ -798,9 +805,9 @@ def update_scatter(theData, vCountry, xValue, yValue):
         return {
             'data': [
                 go.Scatter(
-                    x=data[data['Country'] == i],
-                    y=data[data['Country'] == i]['Quantity'],
-                    # text=data[data['Country'] == i]['Quantity'],
+                    x= data[data.Country == i][xValue] if xValue else data[data['Country'] == i]['InvoiceDate'],
+                    y=data[data.Country == i][yValue] if yValue else  data[data['Country'] == i]['Quantity'],
+                    text=data[data['Country'] == i]['Country'],
                     mode='markers',
                     opacity=0.7,
                     marker={
@@ -813,7 +820,7 @@ def update_scatter(theData, vCountry, xValue, yValue):
 
             'layout': go.Layout(
                 xaxis={
-                    'title': 'Location',
+                    # 'title': 'Location',
                     'titlefont': dict(size=18, color='lime'),
                     'zeroline': False,
                     'ticks': 'outside'
